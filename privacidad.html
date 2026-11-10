@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="logo/favicon.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy - Publicador DubScale</title>
+<meta name="description" content="Privacy Policy / Pol&iacute;tica de privacidad of Publicador DubScale.">
+<style>
+:root{--ink:#16181d;--mut:#5b6270;--bg:#f6f7f9;--card:#fff;--acc:#2f5bea;--line:#e3e6ec}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header{background:#fff;border-bottom:1px solid var(--line)}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+header .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding-top:14px;padding-bottom:14px}
+.brand{font-weight:700;font-size:18px}.brand a{color:inherit;text-decoration:none}
+nav a{margin-left:14px;color:var(--acc);text-decoration:none;font-size:15px}
+main{padding:28px 0 40px}
+h1{font-size:28px;line-height:1.2;margin:.2em 0 .2em}
+h2{font-size:20px;margin:1.7em 0 .4em}
+p,li{color:#2a2f3a}.mut{color:var(--mut);font-size:14px}
+li{margin:.3em 0}
+a{color:var(--acc);word-break:break-word}
+.box{background:#fff;border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:8px;padding:12px 16px;margin:14px 0}
+footer{border-top:1px solid var(--line);padding:20px 0;font-size:14px;color:var(--mut);background:#fff}
+</style>
+</head>
+<body>
+<header><div class="wrap"><span class="brand"><img src="logo/logo_dubscale.svg" alt="DubScale" width="28" height="28" style="vertical-align:middle;margin-right:8px;border-radius:6px"><a href="index.html">Publicador DubScale</a></span>
+<nav><a href="privacidad.html">Privacy / Privacidad</a><a href="terminos.html">Terms / T&eacute;rminos</a></nav></div></header>
+<main><div class="wrap">
+
+<section id="en">
+<p class="mut"><a href="#es">Leer en espa&ntilde;ol &darr;</a></p>
+<h1>Privacy Policy</h1>
+<p class="mut">Publicador DubScale &middot; Last updated: 8 November 2026</p>
+
+<h2>1. Who we are</h2>
+<p>Publicador DubScale (&ldquo;the Tool&rdquo;) is an internal publishing tool operated by <strong>DubScale</strong> (&ldquo;we&rdquo;), Colombia. It is used only by the DubScale team and by the owners of the social accounts connected to it, to publish our own videos on our own accounts. It is not offered to the public. Contact: <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a>.</p>
+
+<h2>2. Data we access and why</h2>
+<p>We only access the data of the accounts that the account owner connects by signing in with the platform&rsquo;s own authorization screen. We use it solely to publish videos that we created and to report the result.</p>
+<ul>
+<li><strong>Google / YouTube</strong> (scopes <code>youtube.upload</code> and <code>youtube.readonly</code>): we upload videos with their title, description and privacy settings to the YouTube channel of the account owner, and we read basic information about that same channel (channel ID and name) and the status of the videos we uploaded (processing, privacy, link). We do not read, store or display data about other users, comments, subscribers or other channels.</li>
+<li><strong>TikTok</strong> (scope <code>video.publish</code>, via Login Kit and Content Posting API): we receive an authorization token and the open ID of the connected TikTok account, the creator display name and avatar and the allowed privacy options returned by TikTok, so that we can show who is posting; we upload the video file, caption and the settings chosen by the user, and read the publishing status. We do not collect data about other TikTok users.</li>
+<li><strong>Meta (Instagram and Facebook)</strong>: through the Instagram and Facebook Graph APIs we use access tokens of our own business accounts and Pages to publish Reels and to read the publication status and IDs of the posts we published. We do not collect data about followers or other users.</li>
+<li><strong>Our own content</strong>: video files, captions and the publishing calendar are stored in our Google Drive and in a private GitHub repository owned by DubScale.</li>
+</ul>
+
+<h2>3. How we use and protect it</h2>
+<ul>
+<li>Data is used only to provide the user-facing function of the Tool: scheduling, uploading and reporting the status of our own posts.</li>
+<li>Access and refresh tokens are stored as encrypted secrets (GitHub Actions secrets) and in a protected local file on the operator&rsquo;s computer. They are never published, never shown in logs and never sent to anyone other than the platform that issued them.</li>
+<li>Our status notices (post published / failed, with a link to the post) are sent to a private Telegram chat of the team and contain no personal data from third parties.</li>
+<li>We do not sell, rent, share or transfer user data to third parties, and we do not use it for advertising, profiling, credit decisions or to train generalized AI/ML models.</li>
+<li>No human reads the platform data except the account owners and the DubScale operators, and only for support or to comply with law.</li>
+</ul>
+
+<div class="box">
+<strong>Google API Services User Data Policy &ndash; Limited Use.</strong> The use and transfer of information received from Google APIs to any other app by Publicador DubScale will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes">Google API Services User Data Policy</a>, including the Limited Use requirements.
+</div>
+<p>By using YouTube API Services through the Tool, the operators are bound by the <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a>. Google&rsquo;s handling of your data is described in the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</p>
+
+<h2>4. Retention and deletion</h2>
+<ul>
+<li>Authorization tokens are kept only while the account is connected. When access is revoked or an account is disconnected, the token is deleted from our secrets within 30 days (usually immediately).</li>
+<li>Publishing logs (post IDs, dates, success or error) are kept up to 12 months for troubleshooting and then deleted. YouTube API data is refreshed or deleted within 30 days of revocation, and in any case is not kept longer than permitted by the YouTube API Services Developer Policies.</li>
+<li>Videos you uploaded stay on your platform account; deleting them there is done on the platform itself.</li>
+<li>To request deletion of any data we hold, write to <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a>. We answer within 30 days.</li>
+</ul>
+
+<h2>5. How to revoke access</h2>
+<ul>
+<li><strong>Google / YouTube:</strong> remove &ldquo;Publicador DubScale&rdquo; at <a href="https://security.google.com/settings/security/permissions">https://security.google.com/settings/security/permissions</a>.</li>
+<li><strong>TikTok:</strong> in the TikTok app go to Settings and privacy &rarr; Security &amp; permissions &rarr; Apps and services (Manage app permissions), and remove the app. (Settings and privacy → Security and permissions → Apps and services permissions)</li>
+<li><strong>Instagram / Facebook:</strong> Facebook Settings &rarr; Business integrations (or Instagram Settings &rarr; Website permissions / Apps and websites) and remove the app.</li>
+</ul>
+<p>After revocation the Tool can no longer access the account.</p>
+
+<h2>6. Cookies and tracking</h2>
+<p>This website uses no cookies, no analytics and no tracking technologies. The Tool itself is not a public website and has no accounts for visitors.</p>
+
+<h2>7. Children</h2>
+<p>The Tool is not directed to children and does not knowingly collect data from anyone under 13.</p>
+
+<h2>8. Changes</h2>
+<p>We will update this page and its date when this policy changes.</p>
+
+<h2>9. Contact</h2>
+<p>DubScale &middot; <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a> &middot; Bucaramanga, Colombia</p>
+</section>
+
+<hr style="border:0;border-top:1px solid var(--line);margin:36px 0">
+
+<section id="es" lang="es">
+<p class="mut"><a href="#en">Read in English &uarr;</a></p>
+<h1>Pol&iacute;tica de privacidad</h1>
+<p class="mut">Publicador DubScale &middot; &Uacute;ltima actualizaci&oacute;n: 8 de noviembre de 2026</p>
+
+<h2>1. Qui&eacute;nes somos</h2>
+<p>Publicador DubScale (&laquo;la Herramienta&raquo;) es una herramienta interna de publicaci&oacute;n operada por <strong>DubScale</strong> (&laquo;nosotros&raquo;), Colombia. La usan solo el equipo de DubScale y los due&ntilde;os de las cuentas conectadas, para publicar nuestros propios videos en nuestras propias cuentas. No se ofrece al p&uacute;blico. Contacto: <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a>.</p>
+
+<h2>2. Datos a los que accedemos y para qu&eacute;</h2>
+<p>Solo accedemos a los datos de las cuentas que su due&ntilde;o conecta iniciando sesi&oacute;n en la pantalla de autorizaci&oacute;n de cada plataforma. Los usamos &uacute;nicamente para publicar videos que nosotros creamos e informar el resultado.</p>
+<ul>
+<li><strong>Google / YouTube</strong> (alcances <code>youtube.upload</code> y <code>youtube.readonly</code>): subimos videos con su t&iacute;tulo, descripci&oacute;n y privacidad al canal de YouTube del due&ntilde;o de la cuenta, y leemos informaci&oacute;n b&aacute;sica de ese mismo canal (ID y nombre) y el estado de los videos que subimos (procesamiento, privacidad, enlace). No leemos, guardamos ni mostramos datos de otros usuarios, comentarios, suscriptores ni otros canales.</li>
+<li><strong>TikTok</strong> (alcance <code>video.publish</code>, con Login Kit y Content Posting API): recibimos un token de autorizaci&oacute;n y el open ID de la cuenta conectada, el nombre, el avatar y las opciones de privacidad permitidas que devuelve TikTok (para mostrar qui&eacute;n publica); subimos el archivo de video, la descripci&oacute;n y los ajustes elegidos, y leemos el estado de la publicaci&oacute;n. No recopilamos datos de otros usuarios de TikTok.</li>
+<li><strong>Meta (Instagram y Facebook)</strong>: mediante las Graph API de Instagram y Facebook usamos tokens de acceso de nuestras propias cuentas profesionales y P&aacute;ginas para publicar Reels y leer el estado y los IDs de lo publicado. No recopilamos datos de seguidores ni de otros usuarios.</li>
+<li><strong>Nuestro propio contenido</strong>: los archivos de video, textos y el calendario de publicaci&oacute;n se guardan en nuestro Google Drive y en un repositorio privado de GitHub de DubScale.</li>
+</ul>
+
+<h2>3. C&oacute;mo los usamos y protegemos</h2>
+<ul>
+<li>Los datos se usan solo para la funci&oacute;n de la Herramienta: programar, subir e informar el estado de nuestras publicaciones.</li>
+<li>Los tokens de acceso y renovaci&oacute;n se guardan como secretos cifrados (secretos de GitHub Actions) y en un archivo local protegido en el computador del operador. Nunca se publican, no aparecen en los registros y no se env&iacute;an a nadie salvo a la plataforma que los emiti&oacute;.</li>
+<li>Los avisos de estado (publicado / con error, con enlace) van a un chat privado de Telegram del equipo y no contienen datos personales de terceros.</li>
+<li>No vendemos, alquilamos, compartimos ni transferimos datos de usuario a terceros, ni los usamos para publicidad, perfilado, decisiones de cr&eacute;dito o para entrenar modelos generales de IA/ML.</li>
+<li>Los datos de las plataformas solo los ven los due&ntilde;os de las cuentas y los operadores de DubScale, y solo para soporte o por obligaci&oacute;n legal.</li>
+</ul>
+
+<div class="box">
+<strong>Pol&iacute;tica de datos de usuario de los servicios de API de Google &ndash; Uso limitado.</strong> El uso y la transferencia por Publicador DubScale de la informaci&oacute;n recibida de las APIs de Google a cualquier otra aplicaci&oacute;n cumplir&aacute; la <a href="https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes">Google API Services User Data Policy</a>, incluidos sus requisitos de Uso limitado (Limited Use).
+</div>
+<p>Al usar los servicios de la API de YouTube mediante la Herramienta, los operadores quedan sujetos a las <a href="https://www.youtube.com/t/terms">Condiciones del servicio de YouTube</a>. El tratamiento de tus datos por Google se describe en la <a href="https://policies.google.com/privacy">Pol&iacute;tica de privacidad de Google</a>.</p>
+
+<h2>4. Conservaci&oacute;n y borrado</h2>
+<ul>
+<li>Los tokens de autorizaci&oacute;n se conservan solo mientras la cuenta est&aacute; conectada. Al revocar el acceso o desconectar la cuenta, el token se elimina de nuestros secretos en un m&aacute;ximo de 30 d&iacute;as (normalmente al instante).</li>
+<li>Los registros de publicaci&oacute;n (IDs, fechas, &eacute;xito o error) se guardan hasta 12 meses para resolver problemas y luego se borran. Los datos de la API de YouTube se actualizan o borran en los 30 d&iacute;as siguientes a la revocaci&oacute;n y, en todo caso, no se conservan m&aacute;s de lo que permiten las pol&iacute;ticas para desarrolladores de YouTube API Services.</li>
+<li>Los videos que subiste permanecen en tu cuenta de la plataforma; borrarlos se hace en la propia plataforma.</li>
+<li>Para pedir el borrado de cualquier dato que tengamos, escribe a <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a>. Respondemos en 30 d&iacute;as.</li>
+</ul>
+
+<h2>5. C&oacute;mo revocar el acceso</h2>
+<ul>
+<li><strong>Google / YouTube:</strong> elimina &laquo;Publicador DubScale&raquo; en <a href="https://security.google.com/settings/security/permissions">https://security.google.com/settings/security/permissions</a>.</li>
+<li><strong>TikTok:</strong> en la app de TikTok: Configuraci&oacute;n y privacidad &rarr; Seguridad y permisos &rarr; Apps y servicios (permisos de apps), y quita la app. (Configuraci&oacute;n y privacidad → Seguridad y permisos → Permisos de apps y servicios)</li>
+<li><strong>Instagram / Facebook:</strong> Configuraci&oacute;n de Facebook &rarr; Integraciones empresariales (o Instagram &rarr; Configuraci&oacute;n &rarr; Apps y sitios web) y elimina la app.</li>
+</ul>
+<p>Tras revocar, la Herramienta ya no puede acceder a la cuenta.</p>
+
+<h2>6. Cookies y seguimiento</h2>
+<p>Este sitio web no usa cookies, anal&iacute;tica ni tecnolog&iacute;as de seguimiento. La Herramienta no es un sitio p&uacute;blico y no tiene cuentas para visitantes.</p>
+
+<h2>7. Menores</h2>
+<p>La Herramienta no est&aacute; dirigida a menores y no recopila a sabiendas datos de menores de 13 a&ntilde;os.</p>
+
+<h2>8. Cambios</h2>
+<p>Actualizaremos esta p&aacute;gina y su fecha cuando cambie la pol&iacute;tica.</p>
+
+<h2>9. Contacto</h2>
+<p>DubScale &middot; <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a> &middot; Bucaramanga, Colombia</p>
+</section>
+
+</div></main>
+<footer><div class="wrap">&copy; 2026 DubScale &middot; <a href="index.html">Home</a> &middot; <a href="terminos.html">Terms / T&eacute;rminos</a></div></footer>
+</body>
+</html>
