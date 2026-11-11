@@ -4,12 +4,26 @@
 <style>body{margin:0;background:#f6f7f9;color:#16181d;font:16px/1.6 system-ui,Arial,sans-serif}.w{max-width:640px;margin:0 auto;padding:32px 16px}
 code{display:block;background:#fff;border:1px solid #e3e6ec;border-radius:8px;padding:12px;word-break:break-all;margin:12px 0}</style></head>
 <body><div class="w"><h1>TikTok authorization</h1>
-<p>Authorization finished. Copy the code below and paste it in the Publicador DubScale console (operators only). / Autorizaci&oacute;n terminada. Copia el c&oacute;digo y p&eacute;galo en la consola del Publicador (solo operadores).</p>
-<code id="c">...</code><p id="e"></p>
-<p><a href="/">Publicador DubScale</a></p></div>
+<p id="m">Finishing the connection with TikTok… / Terminando la conexión con TikTok…</p>
+<code id="c" style="display:none"></code><p id="e"></p>
+<p><a href="/panel/">Publicador DubScale · Panel</a></p></div>
 <script>
-// Muestra el code y el error que TikTok devuelve en la URL; no envia nada a ningun servidor.
-var p=new URLSearchParams(location.search);
-document.getElementById('c').textContent=p.get('code')||'(no code)';
-if(p.get('error'))document.getElementById('e').textContent='Error: '+p.get('error')+' '+(p.get('error_description')||'');
+// TikTok vuelve aquí con ?code=...&state=... . Si el inicio de sesión lo pidió la pantalla (state "panel-..."), el código
+// se entrega al motor del publicador que corre en ESTE PC (127.0.0.1) y se vuelve a la pantalla. No se envía a ningún
+// otro servidor. Si no, solo se muestra el código para pegarlo a mano.
+var p = new URLSearchParams(location.search), code = p.get('code'), st = p.get('state') || '';
+var m = document.getElementById('m'), c = document.getElementById('c'), e = document.getElementById('e');
+if (p.get('error')) {
+  m.textContent = 'TikTok did not authorize the app. / TikTok no autorizó la app.';
+  e.textContent = 'Error: ' + p.get('error') + ' ' + (p.get('error_description') || '');
+} else if (code && st.indexOf('panel-') === 0) {
+  fetch('http://127.0.0.1:8765/api/tiktok/canjear', {method: 'POST', headers: {'Content-Type': 'application/json', 'X-Panel': '1'},
+        body: JSON.stringify({code: code, state: st})})
+    .then(function (r) { return r.json().then(function (d) { if (!r.ok) throw new Error(d.error || ('Error ' + r.status)); return d; }); })
+    .then(function () { m.textContent = 'TikTok account connected. / Cuenta de TikTok conectada.'; location.replace('/panel/?tiktok=ok'); })
+    .catch(function (x) { m.textContent = 'Could not finish the connection. / No se pudo terminar la conexión.'; e.textContent = x.message; });
+} else {
+  m.textContent = 'Authorization finished. Copy the code below and paste it in the Publicador DubScale console (operators only). / Autorización terminada. Copia el código y pégalo en la consola del Publicador (solo operadores).';
+  c.style.display = 'block'; c.textContent = code || '(no code)';
+}
 </script></body></html>

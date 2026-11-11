@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Publicador DubScale · Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--tx:#1b1f27;--mut:#6b7280;--bd:#e3e6ec;--ac:#2f5bea;
+--instagram:#d6249f;--facebook:#1877f2;--youtube:#e11d1d;--tiktok:#111;
+--pendiente:#b7791f;--publicado:#15803d;--error:#b91c1c;--vencido:#7c3aed;--pausado:#6b7280}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,Segoe UI,sans-serif;background:var(--bg);color:var(--tx)}
+header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--bd);padding:12px 24px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0 8px 0 0}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{border:1px solid var(--bd);background:#fff;border-radius:99px;padding:4px 12px;cursor:pointer;font-size:13px}
+.chip.on{background:var(--tx);color:#fff;border-color:var(--tx)}
+button,.btn{font:inherit;border:1px solid var(--bd);background:#fff;border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{background:#f0f2f6}button.pri{background:var(--ac);border-color:var(--ac);color:#fff}button.pri:hover{filter:brightness(1.1)}
+button.pel{color:var(--error);border-color:#f3c0c0}button:disabled{opacity:.45;cursor:not-allowed}
+main{max-width:1000px;margin:0 auto;padding:16px 24px 80px}
+.dia{margin:22px 0 8px;font-weight:700;font-size:16px;text-transform:capitalize}
+.dia small{font-weight:400;color:var(--mut);margin-left:8px}
+.ent{display:flex;gap:14px;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:10px;border-left:6px solid var(--c)}
+.ent video,.ent .sinvid{width:72px;height:128px;border-radius:8px;background:#222;object-fit:cover;flex:none}
+.sinvid{display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;text-align:center;padding:4px}
+.cuerpo{flex:1;min-width:0}.fila{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:4px}
+.red{color:#fff;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:600;background:var(--c)}
+.est{border-radius:6px;padding:1px 8px;font-size:12px;font-weight:600;color:#fff}
+.hora{font-weight:700}.tit{font-weight:600}.nom{color:var(--mut);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.err{color:var(--error);font-size:13px;background:#fdecec;border-radius:6px;padding:4px 8px;margin-top:4px;word-break:break-word}
+.acc{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.acc button{padding:4px 10px;font-size:13px}
+.vacio{text-align:center;color:var(--mut);padding:60px}
+dialog{border:none;border-radius:14px;padding:22px;max-width:620px;width:94vw;box-shadow:0 20px 60px #0004}
+dialog::backdrop{background:#0006}
+label{display:block;margin:10px 0 3px;font-weight:600;font-size:13px}
+input[type=text],input[type=datetime-local],select,textarea{width:100%;font:inherit;padding:7px 9px;border:1px solid var(--bd);border-radius:8px}
+textarea{min-height:110px}
+.chk{display:flex;gap:8px;align-items:center;font-weight:400;margin:6px 0}.chk input{width:auto}
+.pie{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.aviso{background:#fff7e0;border:1px solid #f0d58a;border-radius:8px;padding:8px 12px;margin:10px 0;font-size:13px}
+.aviso.rojo{background:#fdecec;border-color:#f3c0c0}
+.tt-cab{display:flex;gap:12px;align-items:center;margin-bottom:6px}.tt-cab img{width:48px;height:48px;border-radius:50%;background:#ddd}
+.tt-grid{display:grid;grid-template-columns:150px 1fr;gap:16px}.tt-grid video{width:150px;border-radius:8px;background:#000}
+.sub{margin-left:26px}.leg{font-size:12px;color:var(--mut)}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--tx);color:#fff;padding:10px 18px;border-radius:10px;display:none;z-index:20;max-width:80vw}
+a{color:var(--ac)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Publicador DubScale</h1>
+  <div class="chips" id="fRedes"></div>
+  <div class="chips" id="fEst"></div>
+  <label class="chk" style="margin:0"><input type="checkbox" id="soloFuturo"> Ocultar pasado ya publicado</label>
+  <span style="flex:1"></span>
+  <span id="ttEstado" class="leg"></span><button id="bConectarTT">Conectar TikTok</button>
+  <button class="pri" id="bAgregar">+ Agregar del catálogo</button>
+  <button id="bRecargar">Actualizar</button>
+</header>
+<main id="lista"></main>
+<div id="toast"></div>
+
+<dialog id="dEditar"><form method="dialog" id="fEditar">
+  <h3 id="eTit"></h3>
+  <label>Fecha y hora (Bogotá)</label><input type="datetime-local" id="eCuando">
+  <label id="eLTit">Título</label><input type="text" id="eTitulo">
+  <div id="eYT"><label>Título de YouTube</label><input type="text" id="eTituloYT"></div>
+  <label>Texto / descripción</label><textarea id="eTexto"></textarea>
+  <div class="pie"><button type="button" id="eCancel">Cancelar</button><button class="pri" type="submit">Guardar</button></div>
+</form></dialog>
+
+<dialog id="dAgregar"><form method="dialog" id="fAgregar">
+  <h3>Agregar publicaciones desde el catálogo</h3>
+  <label>Video</label><select id="aVideo"></select>
+  <label>Redes</label>
+  <div id="aRedes"></div>
+  <label>Fecha y hora (Bogotá)</label><input type="datetime-local" id="aCuando">
+  <p class="leg">Quedan como «pendiente»: el reloj las publica a esa hora. Desde aquí no se publica nada todavía.</p>
+  <div class="pie"><button type="button" id="aCancel">Cancelar</button><button class="pri" type="submit">Agregar</button></div>
+</form></dialog>
+
+<dialog id="dConf"><form method="dialog">
+  <h3 id="cTit"></h3><p id="cMsg"></p>
+  <div class="pie"><button type="button" id="cNo">Cancelar</button><button class="pri" id="cSi" type="button">Confirmar</button></div>
+</form></dialog>
+
+<dialog id="dTT"><form method="dialog" id="fTT">
+  <h3>Publicar en TikTok</h3>
+  <div id="ttCuenta"></div>
+  <div class="tt-grid">
+    <div><video id="ttVideo" controls preload="metadata"></video><div class="leg" id="ttDur"></div></div>
+    <div>
+      <label>Título (lo que verá la gente)</label><textarea id="ttTitulo" maxlength="2200" style="min-height:90px"></textarea>
+      <label>¿Quién puede ver este video? <span style="color:var(--error)">*</span></label>
+      <select id="ttPriv"></select>
+      <div class="leg" id="ttPrivNota"></div>
+      <label>Permitir a los usuarios</label>
+      <label class="chk"><input type="checkbox" id="ttCom"> Comentar</label>
+      <label class="chk"><input type="checkbox" id="ttDuo"> Dúo</label>
+      <label class="chk"><input type="checkbox" id="ttStitch"> Stitch</label>
+      <div class="leg" id="ttBloq"></div>
+    </div>
+  </div>
+  <label class="chk" style="margin-top:14px"><input type="checkbox" id="ttCom2"> <b>Divulgar contenido comercial</b></label>
+  <div class="leg sub">Activa esto si el video promociona tu propia marca, un producto o servicio de un tercero, o ambos.</div>
+  <div id="ttDiv" class="sub" style="display:none">
+    <label class="chk"><input type="radio" name="ttd" value="tu_marca"> Tu marca <span class="leg">— promocionas tu propio negocio</span></label>
+    <label class="chk"><input type="radio" name="ttd" value="marca"> Contenido de marca <span class="leg">— promocionas a otra marca o tercero</span></label>
+    <div class="aviso" id="ttEtq"></div>
+  </div>
+  <p id="ttConsent" style="font-size:13px"></p>
+  <div class="aviso">Después de publicar, el video puede tardar unos minutos en aparecer en tu perfil de TikTok.</div>
+  <div class="aviso rojo" id="ttFalta" style="display:none"></div>
+  <div class="pie"><button type="button" id="ttCancel">Cancelar</button><button class="pri" id="ttPub" type="button" disabled>Publicar ahora en TikTok</button></div>
+</form></dialog>
+
+<script>
+const COL={instagram:'#d6249f',facebook:'#1877f2',youtube:'#e11d1d',tiktok:'#111'};
+const NOM={instagram:'Instagram',facebook:'Facebook',youtube:'YouTube',tiktok:'TikTok'};
+const ECOL={pendiente:'#b7791f',publicado:'#15803d',error:'#b91c1c',vencido:'#7c3aed',pausado:'#6b7280'};
+const ZONA='America/Bogota';
+// En publicador.dubscale.app la pantalla habla con el motor que corre en ESTE PC (las llaves nunca salen de aquí)
+const BASE=location.protocol==='https:'?'http://127.0.0.1:8765':'';
+let DATOS=[],fRed=new Set(),fEst=new Set(),AHORA=null;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(m,ms=3500){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',ms)}
+async function api(met,url,cuerpo){
+  const r=await fetch(BASE+url,{method:met,headers:{'Content-Type':'application/json','X-Panel':'1'},body:cuerpo?JSON.stringify(cuerpo):undefined});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(d.error||('Error '+r.status));return d}
+// Fechas siempre en hora de Bogotá, sin depender de la zona del PC
+const fmtDia=d=>new Intl.DateTimeFormat('es-CO',{timeZone:ZONA,weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(d);
+const fmtHora=d=>new Intl.DateTimeFormat('es-CO',{timeZone:ZONA,hour:'2-digit',minute:'2-digit',hour12:true}).format(d);
+const claveDia=d=>new Intl.DateTimeFormat('en-CA',{timeZone:ZONA}).format(d);
+function aLocalInput(iso){const p=new Intl.DateTimeFormat('en-CA',{timeZone:ZONA,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(iso)).reduce((a,x)=>(a[x.type]=x.value,a),{});return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}`}
+const deInput=v=>v+':00-05:00'; // Bogotá no tiene horario de verano: siempre -05:00
+
+function chips(){
+  $('fRedes').innerHTML=Object.keys(NOM).map(r=>`<span class="chip ${fRed.has(r)?'on':''}" data-r="${r}">${NOM[r]}</span>`).join('');
+  $('fEst').innerHTML=Object.keys(ECOL).map(r=>`<span class="chip ${fEst.has(r)?'on':''}" data-e="${r}">${r}</span>`).join('');
+}
+document.addEventListener('click',e=>{
+  const c=e.target.closest('.chip');if(!c)return;
+  if(c.dataset.r){fRed.has(c.dataset.r)?fRed.delete(c.dataset.r):fRed.add(c.dataset.r)}
+  if(c.dataset.e){fEst.has(c.dataset.e)?fEst.delete(c.dataset.e):fEst.add(c.dataset.e)}
+  chips();pintar()});
+
+async function cargar(){
+  try{const d=await api('GET','/api/calendario');DATOS=d.entradas;AHORA=new Date(d.ahora);pintar()}
+  catch(x){$('lista').innerHTML=BASE&&x instanceof TypeError
+    ?`<div class="vacio"><b>El motor del publicador no está encendido en este PC.</b><br>Ábrelo con <code>py -3.11 -m publicador.panel --web</code> y recarga esta página.</div>`
+    :`<div class="vacio">No se pudo leer el calendario: ${esc(x.message)}</div>`}}
+
+function pintar(){
+  const ver=DATOS.filter(e=>(!fRed.size||fRed.has(e.red))&&(!fEst.size||fEst.has(e.estado))&&!($('soloFuturo').checked&&e.estado==='publicado'&&new Date(e.cuando)<AHORA));
+  if(!ver.length){$('lista').innerHTML='<div class="vacio">No hay publicaciones con estos filtros.</div>';return}
+  let h='',dia='';
+  for(const e of ver){
+    const f=new Date(e.cuando),k=claveDia(f);
+    if(k!==dia){dia=k;const n=ver.filter(x=>claveDia(new Date(x.cuando))===k).length;h+=`<div class="dia">${esc(fmtDia(f))}<small>${n} publicación${n>1?'es':''}</small></div>`}
+    const nom=(e.archivo||'').split(/[\\/]/).pop();
+    const corr=e._trabajo&&e._trabajo.estado==='corriendo';
+    h+=`<div class="ent" style="--c:${COL[e.red]||'#555'}" data-id="${esc(e.id)}">
+      ${e._existe_video?`<video src="${BASE}/video/${encodeURIComponent(e.id)}#t=0.5" preload="metadata" muted></video>`:`<div class="sinvid">${esc(nom)||'sin video'}<br>(no está en este PC)</div>`}
+      <div class="cuerpo">
+        <div class="fila"><span class="hora">${esc(fmtHora(f))}</span><span class="red">${NOM[e.red]||esc(e.red)}</span>
+          <span class="est" style="background:${ECOL[e.estado]||'#555'}">${corr?'publicando…':esc(e.estado)}</span><span class="leg">n${esc(e.n)}</span></div>
+        <div class="tit">${esc(e.titulo)}</div><div class="nom">${esc(nom)}</div>
+        ${e.resultado&&e.resultado.enlace?`<div><a href="${esc(e.resultado.enlace)}" target="_blank" rel="noopener">${esc(e.resultado.enlace)}</a></div>`:''}
+        ${e.error?`<div class="err">${esc(e.error)}</div>`:''}
+        <div class="acc">${acciones(e,corr)}</div>
+      </div></div>`;
+  }
+  $('lista').innerHTML=h;
+}
+function acciones(e,corr){
+  if(corr)return '<span class="leg">Publicando, espera…</span>';
+  let a='';
+  if(e.estado!=='publicado'){
+    a+=`<button data-a="editar">Editar</button>`;
+    a+=e.estado==='pausado'?`<button data-a="reanudar">Reanudar</button>`:`<button data-a="pausar">Pausar</button>`;
+    if(e.estado==='error'||e.estado==='vencido')a+=`<button data-a="reanudar">Reintentar a su hora</button>`;
+    a+=`<button class="pri" data-a="ahora">Publicar ahora</button>`;
+  }
+  a+=`<button class="pel" data-a="borrar">Borrar</button>`;return a}
+
+$('lista').addEventListener('click',async ev=>{
+  const b=ev.target.closest('button[data-a]');if(!b)return;
+  const id=b.closest('.ent').dataset.id,e=DATOS.find(x=>x.id===id),a=b.dataset.a;
+  try{
+    if(a==='editar')abrirEditar(e);
+    else if(a==='pausar'||a==='reanudar'){await api('PATCH','/api/entrada/'+encodeURIComponent(id),{estado:a==='pausar'?'pausado':'pendiente'});toast(a==='pausar'?'Pausada':'Reanudada');cargar()}
+    else if(a==='borrar'){if(await confirmar('Borrar del calendario',`¿Borrar «${e.titulo}» (${NOM[e.red]})? Esto no borra nada ya publicado en la red, solo la entrada del calendario.`)){await api('DELETE','/api/entrada/'+encodeURIComponent(id),{confirmado:true});toast('Borrada');cargar()}}
+    else if(a==='ahora'){
+      if(e.red==='tiktok')return abrirTikTok(e);
+      if(await confirmar('Publicar ahora',`Se va a publicar AHORA en ${NOM[e.red]}:\n«${e.titulo}»\nEsto es real y público. ¿Seguro?`)){
+        await api('POST','/api/publicar',{id,confirmado:true});toast('Publicando…');seguir(id)}}
+  }catch(x){toast('⚠ '+x.message,6000)}
+});
+async function seguir(id){
+  cargar();
+  const t=setInterval(async()=>{
+    try{const j=await api('GET','/api/trabajo/'+encodeURIComponent(id));
+      if(j.estado!=='corriendo'){clearInterval(t);toast(j.estado==='ok'?'✅ Publicado: '+j.mensaje:'❌ Falló: '+j.mensaje,9000);cargar()}}catch(_){clearInterval(t)}},2000)}
+
+function confirmar(tit,msg){return new Promise(res=>{
+  $('cTit').textContent=tit;$('cMsg').innerText=msg;$('cMsg').style.whiteSpace='pre-line';
+  const d=$('dConf');const fin=v=>{d.close();res(v)};
+  $('cNo').onclick=()=>fin(false);$('cSi').onclick=()=>fin(true);d.oncancel=()=>res(false);d.showModal()})}
+
+// ---- editar
+let editId=null;
+function abrirEditar(e){editId=e.id;$('eTit').textContent=`Editar · ${NOM[e.red]} · n${e.n}`;
+  $('eCuando').value=aLocalInput(e.cuando);$('eTitulo').value=e.titulo||'';$('eTituloYT').value=e.titulo_youtube||'';
+  $('eYT').style.display=e.red==='youtube'?'block':'none';$('eTexto').value=e.texto||'';$('dEditar').showModal()}
+$('eCancel').onclick=()=>$('dEditar').close();
+$('fEditar').onsubmit=async ev=>{ev.preventDefault();
+  const c={cuando:deInput($('eCuando').value),titulo:$('eTitulo').value,texto:$('eTexto').value};
+  if($('eYT').style.display!=='none')c.titulo_youtube=$('eTituloYT').value;
+  try{await api('PATCH','/api/entrada/'+encodeURIComponent(editId),c);$('dEditar').close();toast('Guardado');cargar()}catch(x){toast('⚠ '+x.message,6000)}};
+
+// ---- agregar
+$('bAgregar').onclick=async()=>{
+  try{const cat=await api('GET','/api/catalogo');
+    $('aVideo').innerHTML=cat.map(v=>`<option value="${esc(v.n)}">n${esc(v.n)} · ${esc(v.titulo)}${v.existe?'':' (video no está aquí)'}</option>`).join('');
+    $('aRedes').innerHTML=Object.keys(NOM).map(r=>`<label class="chk"><input type="checkbox" value="${r}"> ${NOM[r]}</label>`).join('');
+    $('aCuando').value='';$('dAgregar').showModal()}catch(x){toast('⚠ '+x.message,6000)}};
+$('aCancel').onclick=()=>$('dAgregar').close();
+$('fAgregar').onsubmit=async ev=>{ev.preventDefault();
+  const redes=[...$('aRedes').querySelectorAll('input:checked')].map(i=>i.value);
+  if(!$('aCuando').value)return toast('Elige fecha y hora');
+  try{const r=await api('POST','/api/agregar',{n:+$('aVideo').value,redes,cuando:deInput($('aCuando').value)});$('dAgregar').close();toast(`Agregadas ${r.creadas.length}`);cargar()}catch(x){toast('⚠ '+x.message,6000)}};
+
+// ---- TikTok (Content Sharing Guidelines: developers.tiktok.com/doc/content-sharing-guidelines)
+const PRIV={PUBLIC_TO_EVERYONE:'Todos',MUTUAL_FOLLOW_FRIENDS:'Amigos (seguimiento mutuo)',FOLLOWER_OF_CREATOR:'Seguidores',SELF_ONLY:'Solo yo'};
+let ttE=null,ttI=null;
+async function abrirTikTok(e){
+  ttE=e;ttI=null;
+  $('ttCuenta').innerHTML='<div class="leg">Consultando tu cuenta de TikTok…</div>';
+  $('ttTitulo').value=e.texto||'';$('ttVideo').src=e._existe_video?BASE+'/video/'+encodeURIComponent(e.id):'';
+  $('ttPriv').innerHTML='';['ttCom','ttDuo','ttStitch','ttCom2'].forEach(i=>{$(i).checked=false;$(i).disabled=false});
+  document.querySelectorAll('input[name=ttd]').forEach(r=>r.checked=false);$('ttDiv').style.display='none';
+  $('ttBloq').textContent='';$('ttDur').textContent='';$('dTT').showModal();ttValidar();
+  const r=await api('GET','/api/tiktok/info').catch(x=>({ok:false,aviso:x.message}));
+  if(!r.ok){$('ttCuenta').innerHTML=`<div class="aviso rojo"><b>No se puede publicar en TikTok todavía.</b><br>${esc(r.aviso)}<br><button type="button" class="pri" onclick="conectarTT()">Conectar TikTok</button></div>`;ttValidar();return}
+  ttI=r.info;
+  $('ttCuenta').innerHTML=`<div class="tt-cab">${ttI.creator_avatar_url?`<img src="${esc(ttI.creator_avatar_url)}" alt="">`:'<img alt="">'}<div>Se publicará en la cuenta de<br><b>${esc(ttI.creator_nickname||'')}</b> <span class="leg">@${esc(ttI.creator_username||'')}</span></div></div>`;
+  const op=ttI.privacy_level_options||[];
+  $('ttPriv').innerHTML='<option value="">— Elige quién puede verlo —</option>'+op.map(o=>`<option value="${o}">${esc(PRIV[o]||o)}</option>`).join('');
+  const bl=[];
+  [['ttCom','comment_disabled','comentarios'],['ttDuo','duet_disabled','dúo'],['ttStitch','stitch_disabled','stitch']].forEach(([i,k,n])=>{if(ttI[k]){$(i).disabled=true;bl.push(n)}});
+  if(bl.length)$('ttBloq').textContent='Tu cuenta tiene desactivado en TikTok: '+bl.join(', ')+'.';
+  const mx=ttI.max_video_post_duration_sec;
+  if(mx){$('ttDur').textContent=`Duración máxima de tu cuenta: ${mx} s`}
+  $('ttVideo').onloadedmetadata=()=>{if(mx&&$('ttVideo').duration>mx){$('ttFalta').style.display='block';$('ttFalta').textContent=`Este video dura ${Math.round($('ttVideo').duration)} s y tu cuenta solo permite ${mx} s.`;ttE._largo=true;ttValidar()}};
+  ttValidar()}
+function ttDiv(){const r=document.querySelector('input[name=ttd]:checked');return r?r.value:null}
+function ttValidar(){
+  const com=$('ttCom2').checked,div=ttDiv(),priv=$('ttPriv').value;
+  $('ttDiv').style.display=com?'block':'none';
+  // el contenido de marca no puede ser privado
+  [...$('ttPriv').options].forEach(o=>{o.disabled=(com&&div==='marca'&&o.value==='SELF_ONLY');});
+  if(com&&div==='marca'&&priv==='SELF_ONLY')$('ttPriv').value='';
+  $('ttEtq').textContent=div==='marca'?'Tu video se marcará como «Paid partnership» (colaboración pagada). El contenido de marca no puede ser privado.':div==='tu_marca'?'Tu video se marcará como «Promotional content» (contenido promocional).':'Elige una opción para continuar.';
+  const c=$('ttConsent');
+  c.innerHTML=div==='marca'
+   ?`By posting, you agree to TikTok's <a target="_blank" rel="noopener" href="https://www.tiktok.com/legal/page/global/bc-policy/en">Branded Content Policy</a> and <a target="_blank" rel="noopener" href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en">Music Usage Confirmation</a>`
+   :`By posting, you agree to TikTok's <a target="_blank" rel="noopener" href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en">Music Usage Confirmation</a>`;
+  let falta='';
+  if(!ttI)falta='Falta conectar la cuenta de TikTok.';
+  else if(!$('ttPriv').value)falta='Elige quién puede ver el video.';
+  else if(com&&!div)falta='Elegiste contenido comercial: marca «Tu marca» o «Contenido de marca».';
+  else if(ttE&&ttE._largo)falta='El video es más largo de lo que permite tu cuenta.';
+  $('ttPub').disabled=!!falta;$('ttPub').title=falta;
+  if(!(ttE&&ttE._largo)){$('ttFalta').style.display=falta&&ttI?'block':'none';$('ttFalta').textContent=falta}}
+['ttPriv','ttCom2'].forEach(i=>$(i).addEventListener('change',ttValidar));
+document.querySelectorAll('input[name=ttd]').forEach(r=>r.addEventListener('change',ttValidar));
+$('ttCancel').onclick=()=>{$('ttVideo').pause();$('dTT').close()};
+$('ttPub').onclick=async()=>{
+  if(!await confirmar('Publicar en TikTok ahora',`Se publicará AHORA en ${ttI.creator_nickname} con privacidad «${PRIV[$('ttPriv').value]||$('ttPriv').value}». ¿Seguro?`))return;
+  try{await api('POST','/api/publicar',{id:ttE.id,confirmado:true,tiktok:{titulo_tiktok:$('ttTitulo').value,privacidad:$('ttPriv').value,
+    comentarios:$('ttCom').checked,duo:$('ttDuo').checked,stitch:$('ttStitch').checked,comercial:$('ttCom2').checked,divulgacion:ttDiv(),consentimiento:true}});
+    $('ttVideo').pause();$('dTT').close();toast('Publicando en TikTok…');seguir(ttE.id)}catch(x){toast('⚠ '+x.message,6000)}};
+
+// ---- conectar la cuenta de TikTok (Login Kit): TikTok vuelve a publicador.dubscale.app/tiktok/callback/,
+// que le pasa el código al motor de este PC y regresa aquí
+async function conectarTT(){try{const r=await api('GET','/api/tiktok/conectar');location.href=r.url}catch(x){toast('⚠ '+x.message,6000)}}
+async function estadoTT(){const r=await api('GET','/api/tiktok/info').catch(()=>null);if(!r)return;
+  $('ttEstado').innerHTML=r.ok?`TikTok: <b>${esc(r.info.creator_nickname||'')}</b>`:'TikTok: sin conectar';
+  $('bConectarTT').textContent=r.ok?'Cambiar cuenta de TikTok':'Conectar TikTok'}
+$('bConectarTT').onclick=conectarTT;
+if(new URLSearchParams(location.search).get('tiktok')==='ok')toast('✅ Cuenta de TikTok conectada',6000);
+$('bRecargar').onclick=cargar;$('soloFuturo').onchange=pintar;
+chips();cargar();estadoTT();setInterval(()=>{if(!document.querySelector('dialog[open]'))cargar()},30000);
+</script>
+</body>
+</html>
