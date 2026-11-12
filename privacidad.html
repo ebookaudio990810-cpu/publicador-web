@@ -33,17 +33,18 @@ footer{border-top:1px solid var(--line);padding:20px 0;font-size:14px;color:var(
 <section id="en">
 <p class="mut"><a href="#es">Leer en espa&ntilde;ol &darr;</a></p>
 <h1>Privacy Policy</h1>
-<p class="mut">Publicador DubScale &middot; Last updated: 8 November 2026</p>
+<p class="mut">Publicador DubScale &middot; Last updated: 12 November 2026</p>
 
 <h2>1. Who we are</h2>
-<p>Publicador DubScale (&ldquo;the Tool&rdquo;) is an internal publishing tool operated by <strong>DubScale</strong> (&ldquo;we&rdquo;), Colombia. It is used only by the DubScale team and by the owners of the social accounts connected to it, to publish our own videos on our own accounts. It is not offered to the public. Contact: <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a>.</p>
+<p>Publicador DubScale (&ldquo;the Tool&rdquo;) is an internal publishing tool operated by <strong>DubScale</strong> (&ldquo;we&rdquo;), Colombia. It is used only by the DubScale team and by the owners of the social accounts connected to it, to publish our own videos on our own accounts and to answer automatically the people who comment on or message those accounts. It is not offered to the public as a service. Contact: <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a>.</p>
 
 <h2>2. Data we access and why</h2>
 <p>We only access the data of the accounts that the account owner connects by signing in with the platform&rsquo;s own authorization screen. We use it solely to publish videos that we created and to report the result.</p>
 <ul>
 <li><strong>Google / YouTube</strong> (scopes <code>youtube.upload</code> and <code>youtube.readonly</code>): we upload videos with their title, description and privacy settings to the YouTube channel of the account owner, and we read basic information about that same channel (channel ID and name) and the status of the videos we uploaded (processing, privacy, link). We do not read, store or display data about other users, comments, subscribers or other channels.</li>
 <li><strong>TikTok</strong> (scope <code>video.publish</code>, via Login Kit and Content Posting API): we receive an authorization token and the open ID of the connected TikTok account, the creator display name and avatar and the allowed privacy options returned by TikTok, so that we can show who is posting; we upload the video file, caption and the settings chosen by the user, and read the publishing status. We do not collect data about other TikTok users.</li>
-<li><strong>Meta (Instagram and Facebook)</strong>: through the Instagram and Facebook Graph APIs we use access tokens of our own business accounts and Pages to publish Reels and to read the publication status and IDs of the posts we published. We do not collect data about followers or other users.</li>
+<li><strong>Meta (Instagram and Facebook)</strong>: through the Instagram and Facebook Graph APIs we use access tokens of our own business accounts and Pages to publish Reels and to read the publication status and IDs of the posts we published.</li>
+<li><strong>Automatic replies on our Instagram and Facebook accounts</strong> (permissions <code>instagram_manage_comments</code>, <code>instagram_manage_messages</code>, <code>pages_messaging</code>, <code>pages_manage_engagement</code>, <code>pages_read_engagement</code>, <code>pages_manage_metadata</code>): when someone comments a keyword (for example &ldquo;LOTES&rdquo;) on one of our own posts, or sends it to us by direct message, Meta notifies our server with the comment or message text, its ID and the sender&rsquo;s ID and username. We use it only to send that person, once, the free resource they asked for (a link to a PDF) by private message, and to reply publicly to the comment saying it was sent. We only answer people who wrote to us first, within the time window Meta allows. We do not store the text of comments or messages, build profiles, send marketing messages or contact anyone who did not write to us.</li>
 <li><strong>Our own content</strong>: video files, captions and the publishing calendar are stored in our Google Drive and in a private GitHub repository owned by DubScale.</li>
 </ul>
 
@@ -64,7 +65,7 @@ footer{border-top:1px solid var(--line);padding:20px 0;font-size:14px;color:var(
 <h2>4. Retention and deletion</h2>
 <ul>
 <li>Authorization tokens are kept only while the account is connected. When access is revoked or an account is disconnected, the token is deleted from our secrets within 30 days (usually immediately).</li>
-<li>Publishing logs (post IDs, dates, success or error) are kept up to 12 months for troubleshooting and then deleted. YouTube API data is refreshed or deleted within 30 days of revocation, and in any case is not kept longer than permitted by the YouTube API Services Developer Policies.</li>
+<li>Publishing logs (post IDs, dates, success or error) are kept up to 12 months for troubleshooting and then deleted. Logs of automatic replies (comment ID, keyword, username, success or error) are kept by our server provider for at most 7 days and then deleted automatically. YouTube API data is refreshed or deleted within 30 days of revocation, and in any case is not kept longer than permitted by the YouTube API Services Developer Policies.</li>
 <li>Videos you uploaded stay on your platform account; deleting them there is done on the platform itself.</li>
 <li>To request deletion of any data we hold, write to <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a>. We answer within 30 days.</li>
 </ul>
@@ -74,6 +75,7 @@ footer{border-top:1px solid var(--line);padding:20px 0;font-size:14px;color:var(
 <li><strong>Google / YouTube:</strong> remove &ldquo;Publicador DubScale&rdquo; at <a href="https://security.google.com/settings/security/permissions">https://security.google.com/settings/security/permissions</a>.</li>
 <li><strong>TikTok:</strong> in the TikTok app go to Settings and privacy &rarr; Security &amp; permissions &rarr; Apps and services (Manage app permissions), and remove the app. (Settings and privacy → Security and permissions → Apps and services permissions)</li>
 <li><strong>Instagram / Facebook:</strong> Facebook Settings &rarr; Business integrations (or Instagram Settings &rarr; Website permissions / Apps and websites) and remove the app.</li>
+<li><strong>If you commented on or messaged our accounts:</strong> you can delete your comment or the conversation in Instagram or Facebook at any time, and ask us to delete any data about you by writing to <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a>.</li>
 </ul>
 <p>After revocation the Tool can no longer access the account.</p>
 
@@ -95,17 +97,18 @@ footer{border-top:1px solid var(--line);padding:20px 0;font-size:14px;color:var(
 <section id="es" lang="es">
 <p class="mut"><a href="#en">Read in English &uarr;</a></p>
 <h1>Pol&iacute;tica de privacidad</h1>
-<p class="mut">Publicador DubScale &middot; &Uacute;ltima actualizaci&oacute;n: 8 de noviembre de 2026</p>
+<p class="mut">Publicador DubScale &middot; &Uacute;ltima actualizaci&oacute;n: 12 de noviembre de 2026</p>
 
 <h2>1. Qui&eacute;nes somos</h2>
-<p>Publicador DubScale (&laquo;la Herramienta&raquo;) es una herramienta interna de publicaci&oacute;n operada por <strong>DubScale</strong> (&laquo;nosotros&raquo;), Colombia. La usan solo el equipo de DubScale y los due&ntilde;os de las cuentas conectadas, para publicar nuestros propios videos en nuestras propias cuentas. No se ofrece al p&uacute;blico. Contacto: <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a>.</p>
+<p>Publicador DubScale (&laquo;la Herramienta&raquo;) es una herramienta interna de publicaci&oacute;n operada por <strong>DubScale</strong> (&laquo;nosotros&raquo;), Colombia. La usan solo el equipo de DubScale y los due&ntilde;os de las cuentas conectadas, para publicar nuestros propios videos en nuestras propias cuentas y responder autom&aacute;ticamente a quien comenta o escribe a esas cuentas. No se ofrece al p&uacute;blico como servicio. Contacto: <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a>.</p>
 
 <h2>2. Datos a los que accedemos y para qu&eacute;</h2>
 <p>Solo accedemos a los datos de las cuentas que su due&ntilde;o conecta iniciando sesi&oacute;n en la pantalla de autorizaci&oacute;n de cada plataforma. Los usamos &uacute;nicamente para publicar videos que nosotros creamos e informar el resultado.</p>
 <ul>
 <li><strong>Google / YouTube</strong> (alcances <code>youtube.upload</code> y <code>youtube.readonly</code>): subimos videos con su t&iacute;tulo, descripci&oacute;n y privacidad al canal de YouTube del due&ntilde;o de la cuenta, y leemos informaci&oacute;n b&aacute;sica de ese mismo canal (ID y nombre) y el estado de los videos que subimos (procesamiento, privacidad, enlace). No leemos, guardamos ni mostramos datos de otros usuarios, comentarios, suscriptores ni otros canales.</li>
 <li><strong>TikTok</strong> (alcance <code>video.publish</code>, con Login Kit y Content Posting API): recibimos un token de autorizaci&oacute;n y el open ID de la cuenta conectada, el nombre, el avatar y las opciones de privacidad permitidas que devuelve TikTok (para mostrar qui&eacute;n publica); subimos el archivo de video, la descripci&oacute;n y los ajustes elegidos, y leemos el estado de la publicaci&oacute;n. No recopilamos datos de otros usuarios de TikTok.</li>
-<li><strong>Meta (Instagram y Facebook)</strong>: mediante las Graph API de Instagram y Facebook usamos tokens de acceso de nuestras propias cuentas profesionales y P&aacute;ginas para publicar Reels y leer el estado y los IDs de lo publicado. No recopilamos datos de seguidores ni de otros usuarios.</li>
+<li><strong>Meta (Instagram y Facebook)</strong>: mediante las Graph API de Instagram y Facebook usamos tokens de acceso de nuestras propias cuentas profesionales y P&aacute;ginas para publicar Reels y leer el estado y los IDs de lo publicado.</li>
+<li><strong>Respuestas autom&aacute;ticas en nuestras cuentas de Instagram y Facebook</strong> (permisos <code>instagram_manage_comments</code>, <code>instagram_manage_messages</code>, <code>pages_messaging</code>, <code>pages_manage_engagement</code>, <code>pages_read_engagement</code>, <code>pages_manage_metadata</code>): cuando alguien comenta una palabra clave (por ejemplo &laquo;LOTES&raquo;) en una de nuestras publicaciones, o nos la escribe por mensaje directo, Meta avisa a nuestro servidor con el texto del comentario o mensaje, su ID y el ID y nombre de usuario de quien lo escribi&oacute;. Lo usamos solo para mandarle a esa persona, una vez, el recurso gratuito que pidi&oacute; (un enlace a un PDF) por mensaje privado, y para responder en p&uacute;blico al comentario que se le envi&oacute;. Solo respondemos a quien nos escribi&oacute; primero, dentro del plazo que permite Meta. No guardamos el texto de comentarios ni mensajes, no creamos perfiles, no enviamos mensajes de marketing ni contactamos a quien no nos escribi&oacute;.</li>
 <li><strong>Nuestro propio contenido</strong>: los archivos de video, textos y el calendario de publicaci&oacute;n se guardan en nuestro Google Drive y en un repositorio privado de GitHub de DubScale.</li>
 </ul>
 
@@ -126,7 +129,7 @@ footer{border-top:1px solid var(--line);padding:20px 0;font-size:14px;color:var(
 <h2>4. Conservaci&oacute;n y borrado</h2>
 <ul>
 <li>Los tokens de autorizaci&oacute;n se conservan solo mientras la cuenta est&aacute; conectada. Al revocar el acceso o desconectar la cuenta, el token se elimina de nuestros secretos en un m&aacute;ximo de 30 d&iacute;as (normalmente al instante).</li>
-<li>Los registros de publicaci&oacute;n (IDs, fechas, &eacute;xito o error) se guardan hasta 12 meses para resolver problemas y luego se borran. Los datos de la API de YouTube se actualizan o borran en los 30 d&iacute;as siguientes a la revocaci&oacute;n y, en todo caso, no se conservan m&aacute;s de lo que permiten las pol&iacute;ticas para desarrolladores de YouTube API Services.</li>
+<li>Los registros de publicaci&oacute;n (IDs, fechas, &eacute;xito o error) se guardan hasta 12 meses para resolver problemas y luego se borran. Los registros de las respuestas autom&aacute;ticas (ID del comentario, palabra clave, nombre de usuario, &eacute;xito o error) los guarda nuestro proveedor de servidor como m&aacute;ximo 7 d&iacute;as y se borran solos. Los datos de la API de YouTube se actualizan o borran en los 30 d&iacute;as siguientes a la revocaci&oacute;n y, en todo caso, no se conservan m&aacute;s de lo que permiten las pol&iacute;ticas para desarrolladores de YouTube API Services.</li>
 <li>Los videos que subiste permanecen en tu cuenta de la plataforma; borrarlos se hace en la propia plataforma.</li>
 <li>Para pedir el borrado de cualquier dato que tengamos, escribe a <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a>. Respondemos en 30 d&iacute;as.</li>
 </ul>
@@ -136,6 +139,7 @@ footer{border-top:1px solid var(--line);padding:20px 0;font-size:14px;color:var(
 <li><strong>Google / YouTube:</strong> elimina &laquo;Publicador DubScale&raquo; en <a href="https://security.google.com/settings/security/permissions">https://security.google.com/settings/security/permissions</a>.</li>
 <li><strong>TikTok:</strong> en la app de TikTok: Configuraci&oacute;n y privacidad &rarr; Seguridad y permisos &rarr; Apps y servicios (permisos de apps), y quita la app. (Configuraci&oacute;n y privacidad → Seguridad y permisos → Permisos de apps y servicios)</li>
 <li><strong>Instagram / Facebook:</strong> Configuraci&oacute;n de Facebook &rarr; Integraciones empresariales (o Instagram &rarr; Configuraci&oacute;n &rarr; Apps y sitios web) y elimina la app.</li>
+<li><strong>Si comentaste o escribiste a nuestras cuentas:</strong> puedes borrar tu comentario o la conversaci&oacute;n en Instagram o Facebook cuando quieras, y pedirnos que borremos cualquier dato tuyo escribiendo a <a href="mailto:shortstendenciatotal@gmail.com">shortstendenciatotal@gmail.com</a>.</li>
 </ul>
 <p>Tras revocar, la Herramienta ya no puede acceder a la cuenta.</p>
 
