@@ -43,19 +43,27 @@ textarea{min-height:110px}
 .sub{margin-left:26px}.leg{font-size:12px;color:var(--mut)}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--tx);color:#fff;padding:10px 18px;border-radius:10px;display:none;z-index:20;max-width:80vw}
 a{color:var(--ac)}
+.cta{display:grid;grid-template-columns:120px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}
+.cta b{font-size:14px}.punto{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;background:#bbb}
+.punto.ok{background:var(--publicado)}.punto.no{background:var(--error)}
+.barra{height:8px;background:var(--bd);border-radius:9px;overflow:hidden;margin-top:6px}.barra i{display:block;height:100%;width:0;background:var(--ac)}
+#avisoNube{max-width:1000px;margin:10px auto 0;padding:0 24px}
 </style>
 </head>
 <body>
 <header>
-  <h1>Publicador DubScale</h1>
+  <h1 id="nombrePub">Publicador DubScale</h1>
   <div class="chips" id="fRedes"></div>
   <div class="chips" id="fEst"></div>
   <label class="chk" style="margin:0"><input type="checkbox" id="soloFuturo"> Ocultar pasado ya publicado</label>
   <span style="flex:1"></span>
   <span id="ttEstado" class="leg"></span><button id="bConectarTT">Conectar TikTok</button>
-  <button class="pri" id="bAgregar">+ Agregar del catálogo</button>
+  <button id="bCuentas"><span class="punto" id="ptCuentas"></span>Cuentas</button>
+  <button class="pri" id="bSubir">+ Subir video</button>
+  <button id="bAgregar" style="display:none">+ Agregar del catálogo</button>
   <button id="bRecargar">Actualizar</button>
 </header>
+<div id="avisoNube"></div>
 <main id="lista"></main>
 <div id="toast"></div>
 
@@ -76,6 +84,28 @@ a{color:var(--ac)}
   <label>Fecha y hora (Bogotá)</label><input type="datetime-local" id="aCuando">
   <p class="leg">Quedan como «pendiente»: el reloj las publica a esa hora. Desde aquí no se publica nada todavía.</p>
   <div class="pie"><button type="button" id="aCancel">Cancelar</button><button class="pri" type="submit">Agregar</button></div>
+</form></dialog>
+
+<dialog id="dSubir"><form method="dialog" id="fSubir">
+  <h3>Subir un video y programarlo</h3>
+  <label>Video (.mp4)</label><input type="file" id="sArchivo" accept="video/mp4,video/quicktime,.mp4,.mov,.m4v">
+  <div class="barra" id="sBarra" style="display:none"><i></i></div>
+  <label>Redes</label><div id="sRedes"></div>
+  <label>Título (para ti y para YouTube)</label><input type="text" id="sTitulo" maxlength="100">
+  <label>Texto de la publicación (Instagram y Facebook)</label><textarea id="sTexto" maxlength="2200" placeholder="Lo que va debajo del video. Ej.: «Comenta LOTES y te mando…»"></textarea>
+  <div id="sYT" style="display:none"><label>Descripción de YouTube <span class="leg">(si la dejas vacía, va el texto de arriba)</span></label><textarea id="sDescYT" maxlength="5000" style="min-height:70px"></textarea></div>
+  <div id="sTT" style="display:none"><label>Texto de TikTok <span class="leg">(si lo dejas vacío, va el texto de arriba)</span></label><textarea id="sTextoTT" maxlength="2200" style="min-height:70px"></textarea>
+    <p class="leg">TikTok se publica desde su propia pantalla (botón «Publicar ahora»), como pide TikTok.</p></div>
+  <label>Fecha y hora (Bogotá)</label><input type="datetime-local" id="sCuando">
+  <p class="leg">Queda como «pendiente» y el reloj de la nube lo publica a esa hora, con el PC apagado.</p>
+  <div class="pie"><button type="button" id="sCancel">Cancelar</button><button class="pri" type="submit" id="sOk">Subir y programar</button></div>
+</form></dialog>
+
+<dialog id="dCuentas"><form method="dialog">
+  <h3>Cuentas de este publicador</h3>
+  <div id="cLista"><div class="leg">Consultando…</div></div>
+  <div id="cPaginas"></div>
+  <div class="pie"><button type="button" id="cRefrescar">Volver a comprobar</button><button type="button" class="pri" id="cCerrar">Cerrar</button></div>
 </form></dialog>
 
 <dialog id="dConf"><form method="dialog">
@@ -146,7 +176,10 @@ document.addEventListener('click',e=>{
   chips();pintar()});
 
 async function cargar(){
-  try{const d=await api('GET','/api/calendario');DATOS=d.entradas;AHORA=new Date(d.ahora);pintar()}
+  try{const d=await api('GET','/api/calendario');DATOS=d.entradas;AHORA=new Date(d.ahora);
+    if(d.nombre){$('nombrePub').textContent=d.nombre;document.title=d.nombre+' · Panel'}
+    $('avisoNube').innerHTML=d.aviso?`<div class="aviso">${esc(d.aviso)}</div>`:(d.nube?'':`<div class="aviso">El calendario se guarda solo en este PC (la nube no está conectada): abre <b>Cuentas</b>.</div>`);
+    pintar()}
   catch(x){$('lista').innerHTML=BASE&&x instanceof TypeError
     ?`<div class="vacio"><b>El motor del publicador no está encendido en este PC.</b><br>Ábrelo con <code>py -3.11 -m publicador.panel --web</code> y recarga esta página.</div>`
     :`<div class="vacio">No se pudo leer el calendario: ${esc(x.message)}</div>`}}
@@ -290,6 +323,73 @@ async function estadoTT(){const r=await api('GET','/api/tiktok/info').catch(()=>
   $('bConectarTT').textContent=r.ok?'Cambiar cuenta de TikTok':'Conectar TikTok'}
 $('bConectarTT').onclick=conectarTT;
 if(new URLSearchParams(location.search).get('tiktok')==='ok')toast('✅ Cuenta de TikTok conectada',6000);
+// ---- subir un video nuevo
+function sRedesSel(){return [...$('sRedes').querySelectorAll('input:checked')].map(i=>i.value)}
+function sMostrar(){const r=sRedesSel();$('sYT').style.display=r.includes('youtube')?'block':'none';$('sTT').style.display=r.includes('tiktok')?'block':'none'}
+$('bSubir').onclick=()=>{$('fSubir').reset();$('sBarra').style.display='none';$('sOk').disabled=false;
+  $('sRedes').innerHTML=Object.keys(NOM).map(r=>`<label class="chk"><input type="checkbox" value="${r}" ${r==='instagram'||r==='facebook'?'checked':''}> ${NOM[r]}</label>`).join('');
+  $('sRedes').querySelectorAll('input').forEach(i=>i.onchange=sMostrar);sMostrar();$('dSubir').showModal()};
+$('sCancel').onclick=()=>$('dSubir').close();
+function subirArchivo(f){return new Promise((res,rej)=>{
+  const x=new XMLHttpRequest();x.open('POST',BASE+'/api/subir');x.setRequestHeader('X-Panel','1');
+  x.setRequestHeader('X-Nombre',encodeURIComponent(f.name));x.setRequestHeader('Content-Type','application/octet-stream');
+  x.upload.onprogress=e=>{if(e.lengthComputable)$('sBarra').firstElementChild.style.width=(100*e.loaded/e.total)+'%'};
+  x.onload=()=>{let d={};try{d=JSON.parse(x.responseText)}catch(_){};x.status<300?res(d):rej(new Error(d.error||('Error '+x.status)))};
+  x.onerror=()=>rej(new Error('no se pudo hablar con el motor del publicador'));x.send(f)})}
+$('fSubir').onsubmit=async ev=>{ev.preventDefault();
+  const f=$('sArchivo').files[0],redes=sRedesSel();
+  if(!f)return toast('Elige el video');if(!redes.length)return toast('Elige al menos una red');
+  if(!$('sTexto').value.trim()&&!$('sTitulo').value.trim())return toast('Escribe el texto de la publicación');
+  if(redes.includes('youtube')&&!$('sTitulo').value.trim())return toast('YouTube necesita un título');
+  if(!$('sCuando').value)return toast('Elige fecha y hora');
+  $('sOk').disabled=true;$('sBarra').style.display='block';
+  try{const up=await subirArchivo(f);
+    const t=$('sTexto').value.trim();
+    const r=await api('POST','/api/agregar_nuevo',{archivo:up.archivo,redes,cuando:deInput($('sCuando').value),
+      textos:{titulo:$('sTitulo').value.trim(),instagram:t,facebook:t,youtube_titulo:$('sTitulo').value.trim(),youtube_descripcion:$('sDescYT').value.trim()||t,tiktok:$('sTextoTT').value.trim()||t}});
+    $('dSubir').close();toast(`Programado en ${r.creadas.length} red${r.creadas.length>1?'es':''}`);cargar();seguirDrive()}
+  catch(x){$('sOk').disabled=false;toast('⚠ '+x.message,7000)}};
+async function seguirDrive(){const t=setInterval(async()=>{try{const j=await api('GET','/api/trabajo/drive');
+  if(j.estado==='corriendo')return;clearInterval(t);if(j.estado==='ok')toast('☁ '+j.mensaje,5000);else if(j.estado==='error')toast('⚠ '+j.mensaje,9000);cargar()}catch(_){clearInterval(t)}},2500)}
+
+// ---- cuentas
+const CNOM={instagram:'Instagram',facebook:'Facebook',youtube:'YouTube',drive:'Google Drive',tiktok:'TikTok',nube:'Nube (GitHub)',telegram:'Avisos'};
+async function abrirCuentas(forzar){$('dCuentas').open||$('dCuentas').showModal();$('cPaginas').innerHTML='';
+  $('cLista').innerHTML='<div class="leg">Consultando las cuentas…</div>';
+  try{const c=await api('GET','/api/cuentas'+(forzar?'?forzar=1':''));pintarCuentas(c)}catch(x){$('cLista').innerHTML=`<div class="aviso rojo">${esc(x.message)}</div>`}}
+function pintarCuentas(c){
+  const fila=(k,boton)=>{const x=c[k]||{};return `<div class="cta"><b><span class="punto ${x.ok?'ok':'no'}"></span>${CNOM[k]}</b>
+    <div>${x.ok?esc(x.nombre||'conectada'):'<span class="leg">sin conectar</span>'}${x.nota?`<div class="leg">${esc(x.nota)}</div>`:''}${(!x.ok&&x.nombre&&String(x.nombre).startsWith('⚠'))?`<div class="leg">${esc(x.nombre)}</div>`:''}</div><div>${boton||''}</div></div>`};
+  const meta=c._meta_app?`<button type="button" onclick="conectarMeta()">${c.instagram.ok?'Cambiar':'Conectar'}</button>`:'<span class="leg">falta META_APP_ID</span>';
+  $('cLista').innerHTML=fila('instagram',meta)+fila('facebook','')+
+    fila('youtube',`<button type="button" onclick="conectarGoogle('youtube')">${c.youtube.ok?'Cambiar':'Conectar'}</button>`)+
+    fila('drive',`<button type="button" onclick="conectarGoogle('drive')">${c.drive.ok?'Cambiar':'Conectar'}</button>`)+
+    fila('tiktok',`<button type="button" onclick="conectarTT()">${c.tiktok.ok?'Cambiar':'Conectar'}</button>`)+
+    fila('nube',c.nube.ok?`<button type="button" onclick="llavesNube()">Enviar llaves a la nube</button>`:'')+fila('telegram','')+
+    `<p class="leg">Después de conectar o cambiar una cuenta, dale a <b>Enviar llaves a la nube</b> para que el reloj de la nube la use.</p>`;
+  $('ptCuentas').className='punto '+(['instagram','facebook','nube'].every(k=>c[k]&&c[k].ok)?'ok':'no');
+  $('bAgregar').style.display=c._catalogo?'':'none'}
+async function conectarMeta(){try{const r=await api('GET','/api/meta/conectar');location.href=r.url}catch(x){toast('⚠ '+x.message,7000)}}
+async function conectarGoogle(cual){
+  try{const r=await api('POST','/api/conectar/'+cual,{});toast('Se abrió Google en el navegador: elige la cuenta y acepta',7000);
+    const t=setInterval(async()=>{const j=await api('GET','/api/trabajo/'+r.trabajo).catch(()=>({estado:'error',mensaje:'sin respuesta'}));
+      if(j.estado==='corriendo')return;clearInterval(t);toast((j.estado==='ok'?'✅ ':'⚠ ')+j.mensaje,8000);abrirCuentas(true)},2500)}
+  catch(x){toast('⚠ '+x.message,7000)}}
+async function llavesNube(){if(!await confirmar('Enviar llaves a la nube','Se copian las llaves de este PC a los secretos (cifrados) del repo de GitHub, para que el reloj de la nube publique con las cuentas conectadas. ¿Seguir?'))return;
+  try{const r=await api('POST','/api/nube/llaves',{});toast(r.fallaron.length?`⚠ ${r.subidas} subidas; fallaron: ${r.fallaron.join(', ')}`:`✅ ${r.subidas} llaves en la nube`,8000)}catch(x){toast('⚠ '+x.message,8000)}}
+async function elegirPagina(){const ps=await api('GET','/api/meta/paginas').catch(()=>[]);
+  if(!ps.length){toast('Vuelve a darle a Conectar Instagram y Facebook',7000);return}
+  await abrirCuentas(true);
+  $('cPaginas').innerHTML='<div class="aviso"><b>¿Qué Página publica?</b> (su Instagram va con ella)</div>'+ps.map(x=>`<label class="chk"><input type="radio" name="pag" value="${esc(x.id)}"> ${esc(x.nombre)} ${x.ig_usuario?`<span class="leg">· Instagram @${esc(x.ig_usuario)}</span>`:'<span class="leg">· sin Instagram</span>'}</label>`).join('')+
+    '<div class="pie"><button type="button" class="pri" onclick="guardarPagina()">Usar esta Página</button></div>'}
+async function guardarPagina(){const r=document.querySelector('input[name=pag]:checked');if(!r)return toast('Elige una Página');
+  try{const x=await api('POST','/api/meta/elegir',{pagina:r.value});toast('✅ Conectada: '+x.nombre+(x.ig_usuario?' · @'+x.ig_usuario:''),7000);abrirCuentas(true)}catch(e){toast('⚠ '+e.message,7000)}}
+$('bCuentas').onclick=()=>abrirCuentas(false);$('cRefrescar').onclick=()=>abrirCuentas(true);$('cCerrar').onclick=()=>$('dCuentas').close();
+const QS=new URLSearchParams(location.search);
+if(QS.get('meta')==='ok'){toast('✅ Instagram y Facebook conectados',6000);abrirCuentas(true)}
+if(QS.get('meta')==='elegir')elegirPagina();
+api('GET','/api/cuentas').then(pintarCuentas).catch(()=>{});
+
 $('bRecargar').onclick=cargar;$('soloFuturo').onchange=pintar;
 chips();cargar();estadoTT();setInterval(()=>{if(!document.querySelector('dialog[open]'))cargar()},30000);
 </script>

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex"><title>Facebook authorization - Publicador DubScale</title>
+<style>body{margin:0;background:#f6f7f9;color:#16181d;font:16px/1.6 system-ui,Arial,sans-serif}.w{max-width:640px;margin:0 auto;padding:32px 16px}
+code{display:block;background:#fff;border:1px solid #e3e6ec;border-radius:8px;padding:12px;word-break:break-all;margin:12px 0}</style></head>
+<body><div class="w"><h1>Instagram &amp; Facebook authorization</h1>
+<p id="m">Finishing the connection with Facebook… / Terminando la conexión con Facebook…</p>
+<code id="c" style="display:none"></code><p id="e"></p>
+<p><a href="/panel/">Publicador DubScale · Panel</a></p></div>
+<script>
+// Facebook vuelve aquí con ?code=...&state=... . Si el inicio de sesión lo pidió la pantalla (state "panel-..."), el código
+// se entrega al motor del publicador que corre en ESTE PC (127.0.0.1) y se vuelve a la pantalla. No se envía a ningún
+// otro servidor. Si no, solo se muestra el código para pegarlo a mano.
+var p = new URLSearchParams(location.search), code = p.get('code'), st = p.get('state') || '';
+var m = document.getElementById('m'), c = document.getElementById('c'), e = document.getElementById('e');
+if (p.get('error')) {
+  m.textContent = 'Facebook did not authorize the app. / Facebook no autorizó la app.';
+  e.textContent = 'Error: ' + p.get('error') + ' ' + (p.get('error_description') || p.get('error_reason') || '');
+} else if (code && st.indexOf('panel-') === 0) {
+  fetch('http://127.0.0.1:8765/api/meta/canjear', {method: 'POST', headers: {'Content-Type': 'application/json', 'X-Panel': '1'},
+        body: JSON.stringify({code: code, state: st})})
+    .then(function (r) { return r.json().then(function (d) { if (!r.ok) throw new Error(d.error || ('Error ' + r.status)); return d; }); })
+    .then(function (d) { m.textContent = 'Connected. / Conectado.'; location.replace(d && d.elegida ? '/panel/?meta=ok' : '/panel/?meta=elegir'); })
+    .catch(function (x) { m.textContent = 'Could not finish the connection. / No se pudo terminar la conexión.'; e.textContent = x.message; });
+} else {
+  m.textContent = 'Authorization finished. Copy the code below and paste it in the Publicador DubScale console (operators only). / Autorización terminada. Copia el código y pégalo en la consola del Publicador (solo operadores).';
+  c.style.display = 'block'; c.textContent = code || '(no code)';
+}
+</script></body></html>
